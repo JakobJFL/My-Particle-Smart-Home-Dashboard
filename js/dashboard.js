@@ -207,7 +207,7 @@ function refreshChart() {
 		let labelsArray = [];
 		labelsArray.push("Denne time");
 		for (let i = 0; i < DBLen; i++) {
-			d.setHours(now-i);
+			d.setHours(now-i-1); // -1 to not include current hour
 			let hours = ("0" + d.getHours()).slice(-2);
 			labelsArray.push(hours+":00");
 		}
