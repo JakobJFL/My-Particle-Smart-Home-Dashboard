@@ -2,7 +2,8 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
-let loadedData = {}
+let loadedData = {};
+let myLineChart;
 
 const DBLen = 48;
 const accessToken = localStorage.getItem('accessToken');
@@ -226,12 +227,11 @@ function refreshChart() {
 	}
 }
 
-let myLineChart;
 
 function printAreaChart(tempData, humidityData, soilData, labelsArray) {
 	if (myLineChart) 
 		myLineChart.destroy();
-
+		
 	let ctx = document.getElementById("chartSoilMoisture");
 	myLineChart = new Chart(ctx, {
 	type: 'line',
