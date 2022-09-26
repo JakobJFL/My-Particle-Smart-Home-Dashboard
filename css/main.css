@@ -1,0 +1,18 @@
+
+.login {
+    position: absolute;
+    top: 15%;
+    transform: translateY(-50%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bg-login-image {
+    height: 560px;
+}
+
+#loginErrorText {
+    text-align: center;
+    color: rgb(218, 108, 108);
+}
+
