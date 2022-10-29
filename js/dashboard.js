@@ -9,6 +9,8 @@ const DBLen = 48;
 const accessToken = localStorage.getItem('accessToken');
 const deviceID = localStorage.getItem('deviceID');
 
+const MAX_CO2_PPM = 1500
+
 setStatus();
 getSensorData();
 setAreaChart();
@@ -132,7 +134,8 @@ function getSensorData() {
 	.then(response => response.json())
 	.then(data => {
 		let dataSegment = data.result.split(";");
-		setHeatIndex(dataSegment[0], dataSegment[1]);
+		console.log(dataSegment[3])
+		//setHeatIndex(dataSegment[0], dataSegment[1]);   HeatIndex!!!!
 		document.getElementById("temperatureVal").innerHTML = dataSegment[0]+"\xB0C";
 
 		document.getElementById("humidityVal").innerHTML = dataSegment[1]+"%";
@@ -153,6 +156,9 @@ function getSensorData() {
 		else {
 			soilMoistureBar.style.backgroundColor = "#e74a3b";
 		}
+
+		document.getElementById("co2Val").innerHTML = dataSegment[3]+" PPM";
+		document.getElementById("co2Bar").style = "width: " + ((dataSegment[3]/MAX_CO2_PPM)*100)+"%";
 	})
 	.catch((error) => {
 		console.error('Error:', error);
@@ -172,23 +178,27 @@ function setAreaChart() {
 		let tempData = [];
 		let humidityData = [];
 		let soilData = [];
+		let co2Data = [];
 		for (let i = 0; i < dataSegments.length; i++) {
 			if (dataSegments[i]) {
 				let data = dataSegments[i].split(";");
 				tempData.push(data[0]);
 				humidityData.push(data[1]);
 				soilData.push(data[2]);
+				co2Data.push(data[3]);
 			}
 			else {
 				tempData.push(null);
 				humidityData.push(null);
 				soilData.push(null);
+				co2Data.push(null);
 			}
 		}
 		loadedData = {
 			tempData: tempData,
 			humidityData: humidityData,
-			soilData: soilData
+			soilData: soilData,
+			co2Data: co2Data
 		};
 		refreshChart();
 	})
@@ -202,6 +212,7 @@ function refreshChart() {
 		let tempData = loadedData.tempData;
 		let humidityData = loadedData.humidityData;
 		let soilData = loadedData.soilData;
+		let co2Data = loadedData.co2Data;
 
 		let d = new Date();
 		let now = d.getHours();
@@ -221,14 +232,16 @@ function refreshChart() {
 		} 
 		if (!document.getElementById("soilCheck").checked) {
 			soilData = null;
-
 		}
-		printAreaChart(tempData, humidityData, soilData, labelsArray);
+		if (!document.getElementById("co2Check").checked) {
+			co2Data = null;
+		}
+		printAreaChart(tempData, humidityData, soilData, co2Data, labelsArray);
 	}
 }
 
 
-function printAreaChart(tempData, humidityData, soilData, labelsArray) {
+function printAreaChart(tempData, humidityData, soilData, co2Data, labelsArray) {
 	if (myLineChart) 
 		myLineChart.destroy();
 		
@@ -284,6 +297,22 @@ function printAreaChart(tempData, humidityData, soilData, labelsArray) {
 			pointHitRadius: 10,
 			pointBorderWidth: 2,
 			data: soilData,
+		},
+		{
+			label: "CO2",
+			lineTension: 0.3,
+			backgroundColor: "rgba(90, 92, 105, 0.10)",
+			borderColor: "#5a5c69",
+			textColor: "#5a5c69",
+			pointRadius: 3,
+			pointBackgroundColor: "#5a5c69",
+			pointBorderColor: "#5a5c69",
+			pointHoverRadius: 3,
+			pointHoverBackgroundColor: "#5a5c69",
+			pointHoverBorderColor: "#5a5c69",
+			pointHitRadius: 10,
+			pointBorderWidth: 2,
+			data: co2Data,
 		}],
 	},
 	options: {
@@ -347,7 +376,14 @@ function printAreaChart(tempData, humidityData, soilData, labelsArray) {
 			callbacks: {
 				label: function(tooltipItem, chart) {
 					let datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-					return datasetLabel + ': ' + tooltipItem.yLabel + ((tooltipItem.datasetIndex == 0) ? " \xB0C" : " %")
+					let dataPostFix = " %";
+					if (tooltipItem.datasetIndex == 0) {
+						dataPostFix = "\xB0C";
+					}
+					else if (tooltipItem.datasetIndex == 3) {
+						dataPostFix = " PPM";
+					}
+					return datasetLabel + ': ' + tooltipItem.yLabel + dataPostFix
 				},
 				labelTextColor: function(tooltipItem, chart) {
 					let color = chart.data.datasets[tooltipItem.datasetIndex].textColor;

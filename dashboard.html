@@ -78,7 +78,81 @@
                     </div>
 
                     <!-- Content Row -->
-                    <div class="row">
+
+                    
+<!--
+                    <div class="row"> 
+                        <div class="col-xl-12 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Device status</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th>header1</th>
+                                            <th>header2</th>
+                                            <th>header3</th>
+                                        </tr>  
+                                        <tr>
+                                            <td>text1.1</td>
+                                            <td>text1.2</td>
+                                            <td>text1.3</td>
+                                        </tr>                        
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-12 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text text-uppercase mb-1">Heat index</div>
+                                            <div class="h5 mb-0 font-weight-bold HI-color" id="heatIndexVal"><img src="img/loading.gif" width="23px"/></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-thermometer fa-2x HI-color"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                -->
+                    <div class="row"> 
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-dark shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">CO2 (MAX 1500PPM)</div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="co2Val"><img src="img/loading.gif" width="23px"/></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-dark" role="progressbar"
+                                                            style="width: 0%" id="co2Bar" aria-valuemin="0"
+                                                            aria-valuemax="1000"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-fire fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
@@ -148,22 +222,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text text-uppercase mb-1">Heat index</div>
-                                            <div class="h5 mb-0 font-weight-bold HI-color" id="heatIndexVal"><img src="img/loading.gif" width="23px"/></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-thermometer fa-2x HI-color"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                                                 
                     </div>
 
@@ -179,11 +237,13 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Seneste 48 timer</h6>
                                     <div class="no-arrow">
                                         <label class="form-check-label" for="tempCheck" style="color: #fcc603">Temperatur </label>
-                                        <input type="checkbox" id="tempCheck" onclick="refreshChart()" checked>
+                                        <input type="checkbox" id="tempCheck" class="mr-4" onclick="refreshChart()" checked>
                                         <label class="form-check-label" for="humidityCheck" style="color: #36b9cc"> Luftfugtighed </label>
-                                        <input type="checkbox" id="humidityCheck" onclick="refreshChart()" checked>
+                                        <input type="checkbox" id="humidityCheck" class="mr-4" onclick="refreshChart()" checked>
                                         <label class="form-check-label" for="soilCheck" style="color: #38ab5f"> Plante jordfugtighed </label>
-                                        <input type="checkbox" id="soilCheck" onclick="refreshChart()" checked>
+                                        <input type="checkbox" id="soilCheck" class="mr-4" onclick="refreshChart()" checked>
+                                        <label class="form-check-label" for="co2Check" style="color: #5a5c69"> CO2 </label>
+                                        <input type="checkbox" id="co2Check" onclick="refreshChart()">
                                     </div>
                                 </div>
                                 <!-- Card Body -->
