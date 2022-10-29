@@ -106,10 +106,11 @@ function updateSensorData() {
 	document.getElementById("humidityBar").style = "width: 0%";
 	document.getElementById("soilMoistureVal").innerHTML = "0%";
 	document.getElementById("soilMoistureBar").style = "width: 0%";
+	document.getElementById("co2Bar").style = "width: 0%";
 	document.getElementById("temperatureVal").innerHTML = `<img src="img/loading.gif" width="23px"/>`;
 	document.getElementById("humidityVal").innerHTML = `<img src="img/loading.gif" width="23px"/>`;
 	document.getElementById("soilMoistureVal").innerHTML = `<img src="img/loading.gif" width="23px"/>`;
-	document.getElementById("heatIndexVal").innerHTML = `<img src="img/loading.gif" width="23px"/>`;
+	document.getElementById("co2Val").innerHTML = `<img src="img/loading.gif" width="23px"/>`;
 
 
 	fetch('https://api.particle.io/v1/devices/'+deviceID+'/setSenData?access_token='+accessToken, {
