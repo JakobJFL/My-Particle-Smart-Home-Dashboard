@@ -356,7 +356,7 @@ function printAreaChart(tempData, humidityData, co2Data, labelsArray) {
 					if (tooltipItem.datasetIndex == 0) {
 						dataPostFix = "\xB0C";
 					}
-					else if (tooltipItem.datasetIndex == 3) {
+					else if (tooltipItem.datasetIndex == 2) {
 						dataPostFix = " PPM";
 					}
 					return datasetLabel + ': ' + tooltipItem.yLabel + dataPostFix
