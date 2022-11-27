@@ -166,56 +166,37 @@ function getSensorData() {
 }
 
 function setAreaChart() {
-	fetch('https://api.particle.io/v1/devices/'+deviceID+'/senDBstr1?access_token='+accessToken, {
+	fetch('https://api.particle.io/v1/devices/'+deviceID+'/senDBstr?access_token='+accessToken, {
 	method: 'GET',
 	headers: {
 		'Content-Type': 'text/plain',
 	}})
 	.then(response => response.json())
-	.then(data1 => {
-		fetch('https://api.particle.io/v1/devices/'+deviceID+'/senDBstr2?access_token='+accessToken, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'text/plain',
-		}})
-		.then(response => response.json())
-		.then(data2 => {
-			let dataSegments1 = data1.result.split("|");
-			let dataSegments2 = data2.result.split("|");
-			let dataSegments = dataSegments1.concat(dataSegments2);
-			dataSegments.length = 48;
-			dataSegments.reverse();
-			console.log(dataSegments)
-			let tempData = [];
-			let humidityData = [];
-			let soilData = [];
-			let co2Data = [];
-			for (let i = 0; i < dataSegments.length; i++) {
-				if (dataSegments[i]) {
-					let data = dataSegments[i].split(";");
-					tempData.push(data[0]);
-					humidityData.push(data[1]);
-					soilData.push(data[2]);
-					co2Data.push(data[3]);
-				}
-				else {
-					tempData.push(null);
-					humidityData.push(null);
-					soilData.push(null);
-					co2Data.push(null);
-				}
+	.then(data => {
+		let dataSegments = data.result.split("|");
+		dataSegments.reverse();
+		let tempData = [];
+		let humidityData = [];
+		let co2Data = [];
+		for (let i = 0; i < dataSegments.length; i++) {
+			if (dataSegments[i]) {
+				let data = dataSegments[i].split(";");
+				tempData.push(data[0]);
+				humidityData.push(data[1]);
+				co2Data.push(data[2]);
 			}
-			loadedData = {
-				tempData: tempData,
-				humidityData: humidityData,
-				soilData: soilData,
-				co2Data: co2Data
-			};
-			refreshChart();
-		})
-		.catch((error) => {
-			console.error('Error:', error);
-		});
+			else {
+				tempData.push(null);
+				humidityData.push(null);
+				co2Data.push(null);
+			}
+		}
+		loadedData = {
+			tempData: tempData,
+			humidityData: humidityData,
+			co2Data: co2Data
+		};
+		refreshChart();
 	})
 	.catch((error) => {
 		console.error('Error:', error);
@@ -226,7 +207,6 @@ function refreshChart() {
 	if (loadedData.tempData) {
 		let tempData = loadedData.tempData;
 		let humidityData = loadedData.humidityData;
-		let soilData = loadedData.soilData;
 		let co2Data = loadedData.co2Data;
 
 		let d = new Date();
@@ -245,22 +225,19 @@ function refreshChart() {
 		if (!document.getElementById("humidityCheck").checked) {
 			humidityData = null;
 		} 
-		if (!document.getElementById("soilCheck").checked) {
-			soilData = null;
-		}
 		if (!document.getElementById("co2Check").checked) {
 			co2Data = null;
 		}
-		printAreaChart(tempData, humidityData, soilData, co2Data, labelsArray);
+		printAreaChart(tempData, humidityData, co2Data, labelsArray);
 	}
 }
 
 
-function printAreaChart(tempData, humidityData, soilData, co2Data, labelsArray) {
+function printAreaChart(tempData, humidityData, co2Data, labelsArray) {
 	if (myLineChart) 
 		myLineChart.destroy();
 		
-	let ctx = document.getElementById("chartSoilMoisture");
+	let ctx = document.getElementById("chart48");
 	myLineChart = new Chart(ctx, {
 	type: 'line',
 	data: {
@@ -296,22 +273,6 @@ function printAreaChart(tempData, humidityData, soilData, co2Data, labelsArray) 
 			pointHitRadius: 10,
 			pointBorderWidth: 2,
 			data: humidityData,
-		},
-		{
-			label: "Plante jordfugtighed",
-			lineTension: 0.3,
-			backgroundColor: "rgba(56, 171, 95, 0.10)",
-			borderColor: "#38ab5f",
-			textColor: "#38ab5f",
-			pointRadius: 3,
-			pointBackgroundColor: "#38ab5f",
-			pointBorderColor: "#38ab5f",
-			pointHoverRadius: 3,
-			pointHoverBackgroundColor: "#38ab5f",
-			pointHoverBorderColor: "#38ab5f",
-			pointHitRadius: 10,
-			pointBorderWidth: 2,
-			data: soilData,
 		},
 		{
 			label: "CO2",
